@@ -5,7 +5,6 @@ from utils.text_processer import generate_chunks_from_pdf
 
 PERSIST_DIR = "../text_index"
 
-
 def generate_chroma_db_from_docs(
     embeddings_model, pdf_path: str = "poc_emb/datascience_paper.pdf"
 ):
