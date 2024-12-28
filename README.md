@@ -23,10 +23,7 @@ Whether you're building a knowledge assistant, research aid, or document search 
 ```plaintext
 qa-rag-system/
 ├── src/
-│   ├── embeddings/         # Handles embedding generation
 │   ├── models/             # Encapsulates LLM logic
-│   ├── pipelines/          # Manages QA pipelines
-│   ├── database/           # Vector database interactions
 │   ├── utils/              # Utility scripts
 │   ├── main.py             # CLI entry point
 ├── tests/                  # Unit tests
