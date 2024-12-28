@@ -11,7 +11,7 @@ def main():
     logger.info("Embedding and LLM models loaded successfully.")
 
     # Generate Chroma DB from PDF
-    pdf_path = "datascience_paper.pdf"
+    pdf_path = "data/datascience_paper.pdf"
     logger.info(f"Generating Chroma DB from {pdf_path}.")
     generate_chroma_db_from_docs(embeddings_model, pdf_path)
 
