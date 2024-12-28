@@ -65,9 +65,11 @@ OPENAI_API_KEY=your_openai_api_key
 ## 🚀 Usage  
 
 1. **Process a new PDF document**:  
-   To process a PDF and build a ChromaDB index:  
-   ```bash
-   python main.py --action process --pdf_path path_to_your_pdf
+
+To process a PDF and build a ChromaDB index:
+```bash
+python main.py --action process --pdf_path path_to_your_pdf
+```
 
 2. **Ask questions from the indexed data**:
 
