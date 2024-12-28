@@ -1,6 +1,6 @@
 import logging
 from data_interactor import generate_chroma_db_from_docs, generate_retriever_chain, ask
-from src.models.model_generator import wrapper_emb_llm
+from models.model_generator import wrapper_emb_llm
 
 def main():
     logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
@@ -11,7 +11,7 @@ def main():
     logger.info("Embedding and LLM models loaded successfully.")
 
     # Generate Chroma DB from PDF
-    pdf_path = "../data/pdf/datascience_paper.pdf"
+    pdf_path = "data/pdf/datascience_paper.pdf"
     logger.info(f"Generating Chroma DB from {pdf_path}.")
     generate_chroma_db_from_docs(embeddings_model, pdf_path)
 

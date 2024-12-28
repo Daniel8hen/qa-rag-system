@@ -1,9 +1,9 @@
 from langchain_chroma import Chroma
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from src.utils.text_processer import generate_chunks_from_pdf
+from utils.text_processer import generate_chunks_from_pdf
 
-persist_dir = "text_index"
+persist_dir = "../text_index"
 
 
 def generate_chroma_db_from_docs(
