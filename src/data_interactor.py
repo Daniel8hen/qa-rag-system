@@ -3,7 +3,7 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from utils.text_processer import generate_chunks_from_pdf
 
-persist_dir = "../text_index"
+PERSIST_DIR = "../text_index"
 
 
 def generate_chroma_db_from_docs(
@@ -16,7 +16,7 @@ def generate_chroma_db_from_docs(
     """
     chunks = generate_chunks_from_pdf(pdf_path)
     db = Chroma.from_documents(
-        chunks, embedding=embeddings_model, persist_directory=persist_dir
+        chunks, embedding=embeddings_model, persist_directory=PERSIST_DIR
     )
 
 def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
@@ -28,7 +28,7 @@ def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
     :return: Tuple of retriever and QA chain.
     """
     vectordb = Chroma(
-        persist_directory=persist_dir, embedding_function=embeddings_model
+        persist_directory=PERSIST_DIR, embedding_function=embeddings_model
     )
 
     # Create a retriever
