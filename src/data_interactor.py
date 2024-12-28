@@ -18,8 +18,6 @@ def generate_chroma_db_from_docs(
     db = Chroma.from_documents(
         chunks, embedding=embeddings_model, persist_directory=persist_dir
     )
-    # db.persist()
-
 
 def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
     """
