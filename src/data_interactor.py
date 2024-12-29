@@ -1,6 +1,8 @@
 from langchain_chroma import Chroma
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
+from langchain.chains import RetrievalQA # TODO remove
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.chains import create_retrieval_chain
+from langchain.prompts import PromptTemplate, ChatPromptTemplate
 from utils.text_processer import generate_chunks_from_pdf
 
 PERSIST_DIR = "text_index"
@@ -35,21 +37,23 @@ def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
     retriever = vectordb.as_retriever(search_kwargs={"k": top_k})
 
     # Define a custom prompt template for the QA chain
-    prompt = PromptTemplate(
-        input_variables=["context", "question"],
-        template=(
-            "Use the following context to answer the question.\n"
-            "Summaries: {summaries}\n"
-            "Question: {question}\n\nAnswer:"
-        ),
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", "Use the following context to answer the question.\n"
+            "Context: {context}\n"
+            "\n\nAnswer:"),
+            ("human", "{input}")
+        ]
     )
 
-    # # Create the RetrievalQA chain
-    qa_chain = RetrievalQA.from_chain_type(
-        llm=llm,
-        retriever=retriever,
-        chain_type="stuff",
-    )
+    # # # Create the RetrievalQA chain
+    # qa_chain = RetrievalQA.from_chain_type(
+    #     llm=llm,
+    #     retriever=retriever,
+    #     chain_type="stuff",
+    # )
+    question_answer_chain = create_stuff_documents_chain(llm, prompt)
+    qa_chain = create_retrieval_chain(retriever, question_answer_chain)
 
     return retriever, qa_chain
 
@@ -63,7 +67,7 @@ def ask(question: str, retriever, chain) -> str:
     :return: The answer as a string.
     """
     # Retrieve the context and get the answer
-    response = chain.invoke({"query": question})
-    answer = response["result"]
+    response = chain.invoke({"input": question})
+    answer = response["answer"]
 
     return f"Answer: {answer}\n\n"
