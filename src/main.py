@@ -36,11 +36,11 @@ def main():
 
         # Set up retriever and QA chain
         logger.info("Setting up retriever and QA chain.")
-        retriever, chain = generate_retriever_chain(embeddings_model, llm)
+        chain = generate_retriever_chain(embeddings_model, llm)
 
         # Ask a question
         # question = "What is feature engineering? Please write a full paragraph"
-        answer = ask(args.question, retriever=retriever, chain=chain)
+        answer = ask(args.question, chain=chain)
         logger.info(f"{answer}")
 
 if __name__ == "__main__":

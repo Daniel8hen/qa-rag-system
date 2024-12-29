@@ -55,14 +55,13 @@ def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     qa_chain = create_retrieval_chain(retriever, question_answer_chain)
 
-    return retriever, qa_chain
+    return qa_chain
 
 
-def ask(question: str, retriever, chain) -> str:
+def ask(question: str, chain) -> str:
     """
     Answer a user question based on the retriever and chain.
     :param question: The user's question.
-    :param retriever: The document retriever.
     :param chain: The QA chain.
     :return: The answer as a string.
     """
