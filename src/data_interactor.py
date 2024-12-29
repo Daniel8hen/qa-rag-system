@@ -3,10 +3,10 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from utils.text_processer import generate_chunks_from_pdf
 
-PERSIST_DIR = "../text_index"
+PERSIST_DIR = "text_index"
 
 def generate_chroma_db_from_docs(
-    embeddings_model, pdf_path: str = "poc_emb/datascience_paper.pdf"
+    embeddings_model, pdf_path: str = "poc_emb/data/pdf/datascience_paper.pdf"
 ):
     """
     Create and persist a Chroma database from a PDF document.
@@ -17,6 +17,7 @@ def generate_chroma_db_from_docs(
     db = Chroma.from_documents(
         chunks, embedding=embeddings_model, persist_directory=PERSIST_DIR
     )
+
 
 def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
     """
@@ -43,7 +44,7 @@ def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
         ),
     )
 
-    # Create the RetrievalQA chain
+    # # Create the RetrievalQA chain
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
         retriever=retriever,
