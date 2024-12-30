@@ -35,10 +35,11 @@ qa-rag-system/
 ## 🔧 Installation  
 
 1. **Clone the repository**:  
-   ```bash
-   git clone https://github.com/Daniel8hen/qa-rag-system.git
-   cd qa-rag-system
-   ```
+```bash
+git clone https://github.com/Daniel8hen/qa-rag-system.git
+cd qa-rag-system
+```
+
 2. **Set up a virtual environment**:
 
 ```bash
