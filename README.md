@@ -86,7 +86,7 @@ python main.py --action query --question "Your question here"
 4. **Example Commands**:
 To process a sample PDF:
 ```bash
-python main.py --action process --pdf_path datascience_paper.pdf
+python main.py --action process --pdf_path data/pdf/datascience_paper.pdf
 ```
 
 To ask a question:
