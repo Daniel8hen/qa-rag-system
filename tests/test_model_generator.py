@@ -8,23 +8,22 @@ from src.models.model_generator import (
 @patch("src.models.model_generator.os.getenv")
 @patch("src.models.model_generator.OpenAIEmbeddings")
 def test_generate_embedding_model(mock_embeddings, mock_getenv):
-    # Mock the environment variable
+    # Mock the environment variable + OpenAIEmbeddings
     mock_getenv.return_value = "fake_api_key"
-    # Mock the OpenAIEmbeddings instantiation
     mock_embeddings.return_value = MagicMock()
 
-    # Call the function
+    # Call the original function
     embedding_model = generate_embedding_model()
 
-    # Assertions
+    # Assertions (one time call with existing key, and one time with fake api key)
     mock_getenv.assert_called_once_with("OPENAI_API_KEY")
     mock_embeddings.assert_called_once_with(openai_api_key="fake_api_key")
-    assert embedding_model == mock_embeddings.return_value
+    assert embedding_model == mock_embeddings.return_value # Both shall retrun the same
 
 
 @patch("src.models.model_generator.ChatOpenAI")
 def test_generate_llm_model(mock_chat_openai):
-    # model name
+    # model name + max tokens, as params
     orig_model_name = "gpt-4o-mini"
     orig_max_tokens = 200
     # Mock the ChatOpenAI instantiation
