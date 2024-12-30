@@ -5,13 +5,6 @@ from src.models.model_generator import (
     generate_llm_model,
     wrapper_emb_llm,
 )
-import sys
-import os
-
-print(sys.path)
-# Add the project root or 'src' folder to sys.path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
-
 
 @patch("src.models.model_generator.os.getenv")
 @patch("src.models.model_generator.OpenAIEmbeddings")
@@ -32,14 +25,17 @@ def test_generate_embedding_model(mock_embeddings, mock_getenv):
 
 @patch("src.models.model_generator.ChatOpenAI")
 def test_generate_llm_model(mock_chat_openai):
+    # model name
+    orig_model_name = "gpt-4o-mini"
+    orig_max_tokens = 200
     # Mock the ChatOpenAI instantiation
     mock_chat_openai.return_value = MagicMock()
 
     # Call the function with parameters
-    llm_model = generate_llm_model(model_name="gpt-4o-mini", max_tokens=200)
+    llm_model = generate_llm_model(model_name=orig_model_name, max_tokens=orig_max_tokens)
 
     # Assertions
-    mock_chat_openai.assert_called_once_with(model_name="gpt-4o-mini", max_tokens=200)
+    mock_chat_openai.assert_called_once_with(model_name=orig_model_name, max_tokens=orig_max_tokens)
     assert llm_model == mock_chat_openai.return_value
 
 
