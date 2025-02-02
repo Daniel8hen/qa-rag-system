@@ -46,12 +46,7 @@ def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
         ]
     )
 
-    # # # Create the RetrievalQA chain
-    # qa_chain = RetrievalQA.from_chain_type(
-    #     llm=llm,
-    #     retriever=retriever,
-    #     chain_type="stuff",
-    # )
+    # Create the RetrievalQA chain
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     qa_chain = create_retrieval_chain(retriever, question_answer_chain)
 
