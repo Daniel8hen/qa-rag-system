@@ -6,3 +6,5 @@ venv/
 .env
 .idea/
 text_index/
+settings.json
+.vscode/
