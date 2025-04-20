@@ -47,6 +47,7 @@ def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
     )
 
     # Create the RetrievalQA chain
+    # Add comment for testing github actions
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     qa_chain = create_retrieval_chain(retriever, question_answer_chain)
 
