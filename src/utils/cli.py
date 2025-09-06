@@ -54,7 +54,7 @@ def create_parser() -> argparse.ArgumentParser:
 
     # process: single PDF
     p_process = subparsers.add_parser("process", help="Process a single PDF file.")
-    p_process.add_argument("--pdf_path", type=str, help="Path to PDF file (required).")
+    p_process.add_argument("--pdf_path", type=str, required=True, help="Path to PDF file (required).")
 
     # process-urls: list of URLs
     p_urls = subparsers.add_parser("process-urls", help="Process a list of URLs.")

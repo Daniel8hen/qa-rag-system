@@ -5,6 +5,7 @@ from src.models.model_generator import (
     wrapper_emb_llm,
 )
 
+
 @patch("src.models.model_generator.os.getenv")
 @patch("src.models.model_generator.OpenAIEmbeddings")
 def test_generate_embedding_model(mock_embeddings, mock_getenv):
@@ -18,7 +19,7 @@ def test_generate_embedding_model(mock_embeddings, mock_getenv):
     # Assertions (one time call with existing key, and one time with fake api key)
     mock_getenv.assert_called_once_with("OPENAI_API_KEY")
     mock_embeddings.assert_called_once_with(openai_api_key="fake_api_key")
-    assert embedding_model == mock_embeddings.return_value # Both shall retrun the same
+    assert embedding_model == mock_embeddings.return_value  # Both shall return the same
 
 
 @patch("src.models.model_generator.ChatOpenAI")

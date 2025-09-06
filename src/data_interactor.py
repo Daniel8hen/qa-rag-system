@@ -1,10 +1,9 @@
 from langchain_chroma import Chroma
-from langchain.chains import RetrievalQA # TODO remove
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
-from langchain.prompts import PromptTemplate, ChatPromptTemplate
+from langchain.prompts import ChatPromptTemplate
 from utils.text_processer import generate_chunks_from_pdf
-from typing import List, Union, Iterable
+from typing import List, Iterable
 import asyncio
 import logging
 from utils.document_loader import create_document_loader, BatchDocumentLoader
@@ -15,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 PERSIST_DIR = "text_index"
 
+
 def generate_chroma_db_from_docs(
     embeddings_model, pdf_path: str = "poc_emb/data/pdf/datascience_paper.pdf"
 ):
@@ -24,7 +24,7 @@ def generate_chroma_db_from_docs(
     :param pdf_path: Path to the PDF file.
     """
     chunks = generate_chunks_from_pdf(pdf_path)
-    db = Chroma.from_documents(
+    _ = Chroma.from_documents(
         chunks, embedding=embeddings_model, persist_directory=PERSIST_DIR
     )
 
@@ -45,7 +45,9 @@ def _persist_documents_to_chroma(documents: List[Document], embeddings_model):
         logger.warning("No documents to persist to ChromaDB.")
         return None
 
-    db = Chroma.from_documents(documents, embedding=embeddings_model, persist_directory=PERSIST_DIR)
+    db = Chroma.from_documents(
+        documents, embedding=embeddings_model, persist_directory=PERSIST_DIR
+    )
     logger.info(f"Persisted {len(documents)} documents to ChromaDB at {PERSIST_DIR}")
     return db
 
@@ -135,11 +137,9 @@ def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
     :param embeddings_model: The embedding model to use.
     :param llm: The language model for answering queries.
     :param top_k: Number of documents to retrieve.
-    :return: Tuple of retriever and QA chain.
+    :return: QA chain.
     """
-    vectordb = Chroma(
-        persist_directory=PERSIST_DIR, embedding_function=embeddings_model
-    )
+    vectordb = Chroma(persist_directory=PERSIST_DIR, embedding_function=embeddings_model)
 
     # Create a retriever
     retriever = vectordb.as_retriever(search_kwargs={"k": top_k})
@@ -147,9 +147,11 @@ def generate_retriever_chain(embeddings_model, llm, top_k: int = 3):
     # Define a custom prompt template for the QA chain
     prompt = ChatPromptTemplate.from_messages(
         [
-            ("system", "Use the following context to answer the question.\n"
-            "Context: {context}\n"
-            "\n\nAnswer:"),
+            (
+                "system",
+                "Use the following context to answer the question.\n"
+                "Context: {context}\n\nAnswer:"
+            ),
             ("human", "{input}")
         ]
     )
@@ -170,6 +172,6 @@ def ask(question: str, chain) -> str:
     """
     # Retrieve the context and get the answer
     response = chain.invoke({"input": question})
-    answer = response["answer"]
+    answer = response.get("answer") if isinstance(response, dict) else None
 
-    return f"Answer: {answer}\n\n"
+    return f"Answer: {answer}\n\n" if answer is not None else "Answer: (no response)\n\n"

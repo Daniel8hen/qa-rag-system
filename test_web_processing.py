@@ -6,6 +6,8 @@ Test script for web document processing functionality
 import sys
 import os
 import asyncio
+import logging
+import pytest
 from pathlib import Path
 
 # Add src directory to path
@@ -16,6 +18,7 @@ from utils.text_processer import generate_chunks_from_urls
 from models.model_generator import wrapper_emb_llm
 from data_interactor import generate_chroma_db_from_urls, generate_retriever_chain, ask
 
+@pytest.mark.asyncio
 async def test_document_loader():
     """Test the basic document loading functionality"""
     print("🧪 Testing WebDocumentLoader...")
