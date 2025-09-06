@@ -11,13 +11,12 @@ from data_interactor import (
 from models.model_generator import wrapper_emb_llm, generate_llm_model
 from utils.cli import parse_args, validate_args
 
+# Module-level logger; do not configure logging on import so tests can control logging behavior
+logger = logging.getLogger(__name__)
+
 
 def main():
-    logging.basicConfig(
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        level=logging.INFO,
-    )
-    logger = logging.getLogger(__name__)
+    # Do not configure logging here; keep import-time side effects minimal so tests can import safely
 
     # parse and validate arguments using the shared CLI utility
     args, parser = parse_args()
@@ -116,4 +115,9 @@ def main():
 
 
 if __name__ == "__main__":
+    # Configure basic logging only when running as a script to avoid side effects during imports/tests
+    logging.basicConfig(
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+    )
     sys.exit(main())
